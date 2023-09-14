@@ -6,6 +6,6 @@ public enum TransactionType {
 
     WITHDRAW,
 
-    TRASFER,
+    TRANSFER,
 
 }

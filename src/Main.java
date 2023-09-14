@@ -21,6 +21,7 @@ public class Main {
             System.out.println("2 - DEPOSITAR");
             System.out.println("3 - TRANSFERIR");
             System.out.println("4 - EXTRATO");
+            System.out.println("5 - SACAR");
             System.out.println("0 - SAIR");
 
             Scanner scanner = new Scanner(System.in);
@@ -84,6 +85,22 @@ public class Main {
                         machine.showBalanceAndStatement(account.get());
 
                         break;
+                    }
+
+                    case "5": {
+
+                        System.out.println("DIGITE O ID DA CONTA");
+                        String withdrawid = scanner.nextLine();
+                        Optional <Account> account = bank.getaccountById(withdrawid);
+
+                        if (account.isEmpty()) {
+                            System.out.println("CONTA NÃO ENCONTRADA");
+                        }
+
+                        System.out.println("DIGITE O VALOR: ");
+                        double value = scanner.nextDouble();
+                        machine.withdraw(account.get(), value);
+
                     }
                 }
             }

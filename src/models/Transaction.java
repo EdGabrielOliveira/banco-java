@@ -58,13 +58,15 @@ public class Transaction {
         this.type = type;
     }
 
+
     @Override
     public String toString() {
-        return "trasation [souceAccount=" + souceAccount + ", targetAccount=" + targetAccount + ", date=" + date
-                + ", value=" + value + ", type=" + type + "]";
+        return "Transaction{" +
+                "souceAccount=" + souceAccount +
+                ", targetAccount=" + targetAccount +
+                ", date=" + date +
+                ", value=" + value +
+                ", type=" + type +
+                '}';
     }
-
-    
-    
-
 }

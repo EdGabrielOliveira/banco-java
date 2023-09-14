@@ -36,14 +36,30 @@ public class CashMachine {
 
         source.setAmount(source.getAmount() - value);
         target.setAmount(target.getAmount() + value);
-        Transaction transaction = new Transaction(source, target, value, TransactionType.TRASFER);
+        Transaction transaction = new Transaction(source, target, value, TransactionType.TRANSFER);
 
         this.bank.registertrasition(transaction);
-        System.out.println("TRANFERIDO " + value + " DE " + source.getAccountId() + " PARA " + target.getAccountId());
+        System.out.println("TRANSFERIDO " + value + " DE " + source.getAccountId() + " PARA " + target.getAccountId());
 
     }
 
-    public void showBalanceAndStatement(Account account){
+    public void withdraw(Account account, double value){
+
+        if (account.getAmount() < value){
+            System.out.println("SALDO INSUFICIENTE!");
+            return;
+        }
+
+        double withdrawAmount = account.getAmount();
+        double newAmount = withdrawAmount - value;
+        account.setAmount(newAmount);
+        Transaction transaction = new Transaction(account, account, value, TransactionType.WITHDRAW);
+        this.bank.registertrasition(transaction);
+
+        System.out.println("SAQUE DE " + value + " DA CONTA " + account.getAccountId());
+    }
+
+        public void showBalanceAndStatement(Account account){
         List<Transaction> transactions = this.bank.getTrasationByAccountId(account.getAccountId());
 
         System.out.println("\tSALDO ATUAL: " + account.getAmount());
@@ -51,10 +67,25 @@ public class CashMachine {
         transactions.forEach(transaction ->{
             boolean isSource = transaction.getSouceAccount().getAccountId().equals(account.getAccountId());
             boolean isDeposit = transaction.getType().equals(TransactionType.DEPOSIT);
-            String type = isDeposit ? "DEPOSITADO" : isSource ?  "ENVIADO" : "RECEBIDO";
+            boolean isWithdraw = transaction.getType().equals(TransactionType.WITHDRAW);
+
+            String type;
+            switch (transaction.getType()) {
+                case DEPOSIT:
+                    type = "DEPOSITADO";
+                    break;
+                case TRANSFER:
+                    type = "ENVIADO";
+                    break;
+                case WITHDRAW:
+                    type = "SACADO";
+                    break;
+                default:
+                    type = "RECEBIDO";
+                    break;
+            }
 
             System.out.println("\t"+ type + " " + transaction.getValue() + " NO DIA " + transaction.getDate().toString());
-        });
+             });
+        }
     }
-
-}
